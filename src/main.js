@@ -9,7 +9,7 @@ import '@/style/index.less'
 // 目录下是有默认索引文件 index.js 就是索引文件 导入顺序：index.js index.vue index.json 报错
 import router from '@/router'
 
-import axios from 'axios'
+import axios from '@/api'
 Vue.prototype.$http = axios
 
 // 控制台输出信息，不使用生产阶段提示，使用开发阶段提示，更详细，上线后改成true
