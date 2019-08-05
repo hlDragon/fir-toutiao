@@ -51,18 +51,21 @@
           @click="toggleMenu()"
         ></span>
         <span class="text">江苏传智播客科技教育有限公司</span>
-        <el-dropdown class="my-dropdown">
+        <el-dropdown
+          class="my-dropdown"
+          @command="changeMenu"
+        >
           <span class="el-dropdown-link">
             <img
-              src="../../assets/images/avatar.jpg"
+              :src="photo"
               alt=""
             >
-            用户名称
+            {{uname}}
             <i class="el-icon-arrow-down el-icon--right"></i>
           </span>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item>个人设置</el-dropdown-item>
-            <el-dropdown-item>退出登录</el-dropdown-item>
+            <el-dropdown-item command="setting">个人设置</el-dropdown-item>
+            <el-dropdown-item command="logout">退出登录</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
       </el-header>
@@ -74,16 +77,34 @@
 </template>
 
 <script>
+import store from '@/store'
 export default {
   data () {
     return {
-      isCollapse: false
+      isCollapse: false,
+      uname: '',
+      photo: ''
     }
   },
   methods: {
     toggleMenu () {
       this.isCollapse = !this.isCollapse
+    },
+    setting () {
+      this.$router.push('/setting')
+    },
+    logout () {
+      store.clearUser()
+      this.$router.push({ name: 'login' })
+    },
+    changeMenu (menuType) {
+      this[menuType]()
     }
+  },
+  created () {
+    const user = store.getUser()
+    this.uname = user.name
+    this.photo = user.photo
   }
 }
 </script>
