@@ -34,7 +34,10 @@
             class="footer"
             v-show="!reqParams.collect"
           >
-            <span :class="item.is_collected?'el-icon-star-on':'el-icon-star-off'"></span>
+            <span
+              @click="toggleCollect(item)"
+              :class="item.is_collected?'el-icon-star-on':'el-icon-star-off'"
+            ></span>
             <span class="el-icon-delete"></span>
           </div>
         </div>
@@ -135,6 +138,16 @@ export default {
         this.reqParams.page = 1
         this.getImages()
       }, 2000)
+    },
+    async toggleCollect (item) {
+      const {
+        data: { data }
+      } = await this.$http.put(`user/images/${item.id}`, {
+        collect: !item.is_collected
+      })
+      this.$message.success(data.collect ? '添加收藏成功' : '取消收藏成功')
+      // 更新当前图片状态
+      item.is_collected = data.collect
     }
   }
 }
