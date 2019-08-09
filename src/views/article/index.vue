@@ -18,19 +18,7 @@
           </el-radio-group>
         </el-form-item>
         <el-form-item label="频道：">
-          <el-select
-            v-model="reqParams.channel_id"
-            placeholder="请选择"
-            clearable
-          >
-            <el-option
-              v-for="item in channelOptions"
-              :key="item.id"
-              :label="item.name"
-              :value="item.id"
-            >
-            </el-option>
-          </el-select>
+          <my-channel v-model="reqParams.channel_id"></my-channel>
         </el-form-item>
         <el-form-item label="日期：">
           <el-date-picker
@@ -166,15 +154,7 @@ export default {
       total: 0
     }
   },
-  watch: {
-    'reqParams.channel_id': function (newVal, oldVal) {
-      if (newVal === '') {
-        this.reqParams.channel_id = null
-      }
-    }
-  },
   created () {
-    this.getChannelOptions()
     this.getArticles()
   },
   methods: {
@@ -211,12 +191,6 @@ export default {
       // 筛选项双向绑定  拿着对应的数据发请求即可  注意：重新筛选后页码第一页
       this.reqParams.page = 1
       this.getArticles()
-    },
-    async getChannelOptions () {
-      const {
-        data: { data }
-      } = await this.$http.get('channels')
-      this.channelOptions = data.channels
     },
     async getArticles () {
       const {
