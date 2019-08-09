@@ -38,7 +38,10 @@
               @click="toggleCollect(item)"
               :class="item.is_collected?'el-icon-star-on':'el-icon-star-off'"
             ></span>
-            <span class="el-icon-delete"></span>
+            <span
+              @click="deleteImage(item.id)"
+              class="el-icon-delete"
+            ></span>
           </div>
         </div>
       </div>
@@ -148,6 +151,19 @@ export default {
       this.$message.success(data.collect ? '添加收藏成功' : '取消收藏成功')
       // 更新当前图片状态
       item.is_collected = data.collect
+    },
+    deleteImage (id) {
+      this.$confirm('老铁，此操作将永久删除该素材, 是否继续?', '温馨提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      })
+        .then(async () => {
+          await this.$http.delete(`user/images/${id}`)
+          this.$message.success('删除成功')
+          this.getImages()
+        })
+        .catch(() => {})
     }
   }
 }
