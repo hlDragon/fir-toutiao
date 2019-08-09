@@ -17,6 +17,7 @@
           type="success"
           size="small"
           style="float:right"
+          @click="openDialog()"
         >添加素材</el-button>
       </div>
       <div class="img_list">
@@ -29,13 +30,19 @@
             :src="item.url"
             alt=""
           >
-          <div class="footer" v-show="!reqParams.collect">
+          <div
+            class="footer"
+            v-show="!reqParams.collect"
+          >
             <span :class="item.is_collected?'el-icon-star-on':'el-icon-star-off'"></span>
             <span class="el-icon-delete"></span>
           </div>
         </div>
       </div>
-      <div class="page" style="text-align:center">
+      <div
+        class="page"
+        style="text-align:center"
+      >
         <el-pagination
           v-if="total > reqParams.per_page"
           background
@@ -48,10 +55,38 @@
         </el-pagination>
       </div>
     </el-card>
+    <el-dialog
+      title="添加素材"
+      :visible.sync="dialogVisible"
+      width="300px"
+    >
+      <el-upload
+        class="avatar-uploader"
+        action="http://ttapi.research.itcast.cn/mp/v1_0/user/images"
+        :show-file-list="false"
+        :on-success="handleAvatarSuccess"
+        :headers="imgHeaders"
+        name="image"
+      >
+        <img
+          v-if="imageUrl"
+          :src="imageUrl"
+          class="avatar"
+        >
+        <i
+          v-else
+          class="el-icon-plus avatar-uploader-icon"
+        ></i>
+      </el-upload>
+      <span slot="footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
 <script>
+import store from '@/store'
 export default {
   data () {
     return {
@@ -61,7 +96,12 @@ export default {
         per_page: 10
       },
       images: [],
-      total: 0
+      total: 0,
+      dialogVisible: false,
+      imageUrl: null,
+      imgHeaders: {
+        Authorization: `Bearer ${store.getUser().token}`
+      }
     }
   },
   created () {
@@ -82,6 +122,19 @@ export default {
     changePage (newPage) {
       this.reqParams.page = newPage
       this.getImages()
+    },
+    openDialog () {
+      this.imageUrl = null
+      this.dialogVisible = true
+    },
+    handleAvatarSuccess (res) {
+      this.imageUrl = res.data.url
+      this.$message.success('上传成功')
+      window.setTimeout(() => {
+        this.dialogVisible = false
+        this.reqParams.page = 1
+        this.getImages()
+      }, 2000)
     }
   }
 }
