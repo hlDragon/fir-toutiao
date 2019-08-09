@@ -10,6 +10,10 @@ import '@/style/index.less'
 import router from '@/router'
 
 import axios from '@/api'
+
+import myCom from '@/components'
+Vue.use(myCom)
+
 Vue.prototype.$http = axios
 
 // 控制台输出信息，不使用生产阶段提示，使用开发阶段提示，更详细，上线后改成true
