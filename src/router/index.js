@@ -18,6 +18,8 @@ import Publish from '@/views/publish'
 
 import store from '../store'
 
+import Comment from '@/views/comment'
+
 Vue.use(VueRouter)
 
 const router = new VueRouter({
@@ -50,6 +52,11 @@ const router = new VueRouter({
           path: '/publish',
           name: 'publish',
           component: Publish
+        },
+        {
+          path: '/comment',
+          name: 'comment',
+          component: Comment
         }
       ]
     },
