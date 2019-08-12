@@ -18,6 +18,8 @@ import Publish from '@/views/publish'
 
 import store from '../store'
 
+import Setting from '@/views/setting'
+
 import Comment from '@/views/comment'
 
 Vue.use(VueRouter)
@@ -57,6 +59,11 @@ const router = new VueRouter({
           path: '/comment',
           name: 'comment',
           component: Comment
+        },
+        {
+          path: '/setting',
+          name: 'setting',
+          component: Setting
         }
       ]
     },
