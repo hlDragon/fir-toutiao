@@ -20,6 +20,8 @@ import store from '../store'
 
 import Setting from '@/views/setting'
 
+import Fans from '@/views/fans'
+
 import Comment from '@/views/comment'
 
 Vue.use(VueRouter)
@@ -64,6 +66,11 @@ const router = new VueRouter({
           path: '/setting',
           name: 'setting',
           component: Setting
+        },
+        {
+          path: '/fans',
+          name: 'fans',
+          component: Fans
         }
       ]
     },
